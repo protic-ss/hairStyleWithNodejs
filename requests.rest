@@ -1,0 +1,29 @@
+GET http://localhost:8080/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidWx0cm9uIiwiaWF0IjoxNjk3Njk0MTMxLCJleHAiOjE2OTc2OTQxNDZ9.kdtELrvceU1Y3AMQUW5aAGAuoAlZGM4qMcdwZJq1O9Q
+
+###
+
+DELETE http://localhost:8089/logout
+Content-Type: application/json
+
+{
+    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidWx0cm9uIiwiaWF0IjoxNjk3Njk0MDg4LCJleHAiOjE2OTc2OTQxMDN9.ITsRmFEkyg947PqjTT7re_FLctQYs99kgUplXEIjkfM"
+}
+
+###
+
+POST http://localhost:8089/token
+Content-Type: application/json
+
+{
+    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidWx0cm9uIiwiaWF0IjoxNjk3Njk0MDg4fQ.Lthu2_xY_Q6ixG1KbIHln0wmAibRAyy7U9jlcYdoz6s"
+}
+
+###
+
+POST http://localhost:8089/login
+Content-Type: application/json
+
+{
+    "username" : "ultron"
+}
