@@ -2,14 +2,14 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const fileUpload = require("express-fileupload");
+const path = require("path");
 
 const app = express();
 
 var corOptions = {
-  origin: "https//localhost:8081",
+  origin: "http://localhost:3000",
 };
-
-// middleware
 
 app.use(cors(corOptions));
 
@@ -17,13 +17,59 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
+app.use(fileUpload());
+
 //routres
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
+// its for same server image upload
+// app.post("/upload", function (req, res) {
+//   let sampleFile;
+//   let uploadPath;
+//   console.log(req.files)
+
+//   if (!req.files || Object.keys(req.files).length === 0) {
+//     return res.status(400).send("No files were uploaded.");
+//   }
+
+//   // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+//   sampleFile = req.files.sampleFile;
+//   uploadPath = __dirname + "/uploads/" + sampleFile.name;
+
+//   // Use the mv() method to place the file somewhere on your server
+//   sampleFile.mv(uploadPath, function (err) {
+//     if (err) return res.status(500).send(err);
+
+//     res.send("File uploaded!");
+//   });
+// });
+
+app.post("/upload", function (req, res) {
+  let sampleFile;
+  let uploadPath;
+
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send("No files were uploaded.");
+  }
+
+  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+  sampleFile = req.files.image;
+  uploadPath = __dirname + "/uploads/" + new Date().getTime() + sampleFile.name;
+
+  // Use the mv() method to place the file somewhere on your server
+  sampleFile.mv(uploadPath, function (err) {
+    if (err) return res.status(500).send(err);
+
+    res.send("File uploaded!");
+  });
+});
 
 const router = require("./routes/productRouter.js");
 app.use("/api/products", router);
 
-
-app.get("/", authenticateToken, (req, res) => {
+app.get("/test", authenticateToken, (req, res) => {
   res.json({ message: "hi universe" });
 });
 
