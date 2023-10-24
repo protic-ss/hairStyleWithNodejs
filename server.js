@@ -4,6 +4,7 @@ const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const fileUpload = require("express-fileupload");
 const path = require("path");
+const fs = require("fs");
 
 const app = express();
 
@@ -19,9 +20,26 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(fileUpload());
 
+app.use("/uploads", express.static("uploads"));
+
 //routres
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
+});
+
+app.get("/images", (req, res) => {
+  const folderPath = "./uploads";
+  let arrFiles = [];
+
+  fs.readdir(folderPath, (err, files) => {
+    if (err) {
+      console.error("Error reading folder:", err);
+      return;
+    }
+
+    // 'files' is an array of file and folder names in the specified directory
+    res.json({ files });
+  });
 });
 
 // its for same server image upload
